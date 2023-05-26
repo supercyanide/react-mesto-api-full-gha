@@ -20,8 +20,13 @@ export const signup = ({ password, email }) => {
     },
     body: JSON.stringify({ password, email })
   })
-  .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-  .then((data) => data);
+  .then((data) => {
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
+    return data
+  });
 };
 
 export const signin = (email, password) => {
@@ -29,12 +34,19 @@ export const signin = (email, password) => {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Credentials': 'true'
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
+    withCredentials: true,
   })
-  .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-  .then((data) => data);
+  .then((data) => {
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
+    return data
+  });
 };
 
 export const checkToken = (token) => {
@@ -46,5 +58,4 @@ export const checkToken = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-  .then(data => { return data })
 };
