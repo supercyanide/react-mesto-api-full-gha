@@ -37,7 +37,6 @@ export const signin = (email, password) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password }),
-    withCredentials: true,
   })
   .then((data) => {
     if (data.token) {

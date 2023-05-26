@@ -1,6 +1,7 @@
 const allowedCors = [
   'https://supercyanide.nomoredomains.rocks',
   'http://supercyanide.nomoredomains.rocks',
+  'http://localhost:3001',
   'http://localhost:3000',
 ];
 
