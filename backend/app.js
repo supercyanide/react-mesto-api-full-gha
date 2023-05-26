@@ -20,6 +20,8 @@ const errorHandler = require('./middlewares/error-handler');
 
 const { PORT = 3000 } = process.env;
 
+console.log(PORT);
+
 mongoose.connect('mongodb://localhost:27017/mestodb');
 const app = express();
 app.use(express.json());
