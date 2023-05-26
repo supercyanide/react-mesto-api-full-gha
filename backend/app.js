@@ -6,14 +6,14 @@ const express = require('express');
 // const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
-// const crashTestRouter = require('./routes/crash');
+const crashTestRouter = require('./routes/crash');
 // const userRouter = require('./routes/users');
 // const signInRouter = require('./routes/signin');
 // const signUpRouter = require('./routes/signup');
 // const cardRouter = require('./routes/cards');
 
 // const auth = require('./middlewares/auth');
-// const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 // const NotFoundError = require('./errors/NotFoundError');
 // const errorHandler = require('./middlewares/error-handler');
@@ -21,12 +21,15 @@ const cors = require('cors');
 const { PORT = 3000 } = process.env;
 
 // mongoose.connect('mongodb://localhost:27017/mestodb');
-const whitelist = ['http://localhost:3001',
-  'https://72e8-212-58-103-119.ngrok-free.app',
-  'https://72e8-212-58-103-119.ngrok-free.app/',
-  'http://72e8-212-58-103-119.ngrok-free.app',
-  'http://72e8-212-58-103-119.ngrok-free.app/',
-  'http://54d1-212-58-103-119.ngrok-free.app', 'https://54d1-212-58-103-119.ngrok-free.app', 'https://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks/sign-in', 'https://supercyanide.nomoredomains.rocks/sign-in'];
+const whitelist = [
+  'http://localhost:3001',
+  'https://supercyanide.nomoredomains.rocks',
+  'http://supercyanide.nomoredomains.rocks',
+  'http://supercyanide.nomoredomains.rocks/sign-in',
+  'https://supercyanide.nomoredomains.rocks/sign-in',
+  'https://supercyanide.nomoredomains.rocks',
+  'http://supercyanide.nomoredomains.rocks',
+];
 const app = express();
 
 // const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -50,19 +53,24 @@ const app = express();
 
 // app.options('*', cors()); // include before other routes
 // app.use(cors({ origin: '*' }));
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      console.log(origin);
-      if (!origin || whitelist.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  }),
-);
+app.use(cors({
+  origin: whitelist,
+  credentials: true,
+}));
+
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       console.log(origin);
+//       if (!origin || whitelist.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     },
+//     credentials: true,
+//   }),
+// );
 // app.use(cors());
 // app.use(express.json());
 
@@ -95,7 +103,6 @@ app.post('/signin', (req, res) => {
 
 app.listen(PORT, () => console.log(`🚀 ${PORT}`));
 
-
 // app.get('/', (req, res) => {
 //   res.type('text/plain');
 //   res.status(200);
@@ -105,8 +112,8 @@ app.listen(PORT, () => console.log(`🚀 ${PORT}`));
 // app.options('*', cors()); // include before other routes
 // app.use(cors({ origin: '*' })); // ['http://localhost:3001', 'http://localhost:3001', 'https://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks'], credentials: false, maxAge: 60 }));
 
-// app.use(requestLogger);
-// app.use(crashTestRouter);
+app.use(requestLogger);
+app.use(crashTestRouter);
 // app.use(signInRouter);
 // // app.use(signUpRouter);
 
@@ -114,7 +121,7 @@ app.listen(PORT, () => console.log(`🚀 ${PORT}`));
 
 // app.use(userRouter);
 // app.use(cardRouter);
-// app.use(errorLogger);
+app.use(errorLogger);
 
 // app.use(errors());
 
