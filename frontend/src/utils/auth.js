@@ -1,4 +1,4 @@
-const BASE_URL = 'https://da9f-212-58-103-119.eu.ngrok.io'; // 'https://api.supercyanide.nomoredomains.rocks';
+const BASE_URL = 'https://c4c3-212-58-103-119.eu.ngrok.io'; // 'https://api.supercyanide.nomoredomains.rocks';
 
 function checkResponse(res) {
   if (res.ok) {
