@@ -20,15 +20,13 @@ const errorHandler = require('./middlewares/error-handler');
 
 const { PORT = 3000 } = process.env;
 
-console.log(PORT);
-
 mongoose.connect('mongodb://localhost:27017/mestodb');
 const app = express();
 app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 
-// app.use(cors({ origin: false })); // ['http://localhost:3001', 'http://localhost:3001', 'https://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks'], credentials: false, maxAge: 60 }));
+app.use(cors({ origin: '*' })); // ['http://localhost:3001', 'http://localhost:3001', 'https://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks'], credentials: false, maxAge: 60 }));
 
 app.use(requestLogger);
 app.use(crashTestRouter);
