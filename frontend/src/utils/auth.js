@@ -1,4 +1,4 @@
-const BASE_URL = 'https://auth.nomoreparties.co';
+const BASE_URL = 'https://api.supercyanide.nomoredomains.rocks';
 
 function checkResponse(res) {
   if (res.ok) {
@@ -20,6 +20,8 @@ export const signup = ({ password, email }) => {
     },
     body: JSON.stringify({ password, email })
   })
+  .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+  .then((data) => data);
 };
 
 export const signin = (email, password) => {
@@ -31,11 +33,8 @@ export const signin = (email, password) => {
     },
     body: JSON.stringify({ email, password })
   })
-  .then((data) => {
-    if (data.token) {
-      localStorage.setItem('token', data.token);
-    }
-  })
+  .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+  .then((data) => data);
 };
 
 export const checkToken = (token) => {

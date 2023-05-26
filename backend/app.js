@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 
+const crashTestRouter = require('./routes/crash');
 const userRouter = require('./routes/users');
 const signInRouter = require('./routes/signin');
 const signUpRouter = require('./routes/signup');
@@ -25,7 +26,7 @@ app.use(helmet());
 app.use(cookieParser());
 
 app.use(requestLogger);
-
+app.use(crashTestRouter);
 app.use(signInRouter);
 app.use(signUpRouter);
 
