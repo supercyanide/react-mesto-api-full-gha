@@ -22,13 +22,8 @@ const { PORT = 3000 } = process.env;
 
 // mongoose.connect('mongodb://localhost:27017/mestodb');
 const whitelist = [
-  'http://localhost:3001',
-  'https://supercyanide.nomoredomains.rocks',
   'http://supercyanide.nomoredomains.rocks',
-  'http://supercyanide.nomoredomains.rocks/sign-in',
-  'https://supercyanide.nomoredomains.rocks/sign-in',
   'https://supercyanide.nomoredomains.rocks',
-  'http://supercyanide.nomoredomains.rocks',
 ];
 const app = express();
 
@@ -55,7 +50,7 @@ const app = express();
 // app.use(cors({ origin: '*' }));
 app.use(cors({
   origin: whitelist,
-  credentials: true,
+  // credentials: true,
 }));
 
 // app.use(
