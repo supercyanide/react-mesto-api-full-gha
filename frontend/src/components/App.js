@@ -66,7 +66,7 @@ function App() {
       auth.checkToken(token).then((res) => {
         if (res) {
           setLoggedIn(true);
-          setUserEmail(res.data.email);
+          setUserEmail(res.email);
           navigate("/", { replace: true });
         }
       })
@@ -78,30 +78,30 @@ function App() {
 
   function handleRegister(formValue) {
     auth.signup(formValue)
-    .then(() => {
-      setIsRegisterStatus(true);
-      navigate('/sign-in', { replace: true });
-    }
-    )
-    .catch((err) => {
-      setIsRegisterStatus(false);
-      console.log(err);
-    })
-    .finally(() => {
-      setIsInfoTooltip(true);
-    })
+      .then(() => {
+        setIsRegisterStatus(true);
+        navigate('/sign-in', { replace: true });
+      }
+      )
+      .catch((err) => {
+        setIsRegisterStatus(false);
+        console.log(err);
+      })
+      .finally(() => {
+        setIsInfoTooltip(true);
+      })
   }
 
   function handleLogin(email, password) {
     auth.signin(email, password)
-    .then(() => {
-      setUserEmail(email);
-      setLoggedIn(true);
-      navigate('/');
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(() => {
+        setUserEmail(email);
+        setLoggedIn(true);
+        navigate('/');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   useEffect(() => {
@@ -253,7 +253,7 @@ function App() {
               isLoggedIn={isLoggedIn}
             />
             <ProtectedRouteElement element={Main} loggedIn={isLoggedIn}
-              cards={cards}
+              cards={cards && cards.data || []}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
               onEditAvatar={handleEditAvatarClick}

@@ -3,8 +3,14 @@ import { apiConfig } from "./config";
 export class Api {
     constructor(options) {
         this._baseUrl = options.baseUrl;
-        this._headers = options.headers;
     };
+
+    _getHeaders() {
+        return {
+            'authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    }
 
     _checkStatus(res) {
         if (res.ok) {
@@ -16,7 +22,7 @@ export class Api {
 
     _get(link) {
         return fetch(`${this._baseUrl}${link}`, {
-            headers: this._headers,
+            headers: this._getHeaders(),
         })
         .then(this._checkStatus);
     };
@@ -24,7 +30,7 @@ export class Api {
     _post(link, method, body) {
         return fetch(`${this._baseUrl}${link}`, {
             method: method,
-            headers: this._headers,
+            headers: this._getHeaders(),
             body: JSON.stringify(body),
         })
         .then(this._checkStatus);

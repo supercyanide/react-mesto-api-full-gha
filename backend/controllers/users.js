@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -132,7 +133,13 @@ const login = (req, res, next) => {
 
       res.send({ email, token });
     })
-    .catch(next);
+    .catch((err) => {
+      res
+        .status(401)
+        .send({ message: err.message });
+
+      next(err);
+    });
 };
 
 module.exports = {
