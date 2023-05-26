@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 
-app.use(cors({ origin: ['http://localhost:3001', 'http://localhost:3001', 'https://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks'], credentials: true, maxAge: 60 }));
+app.use(cors({ origin: ['http://localhost:3001', 'http://localhost:3001', 'https://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks'], credentials: false, maxAge: 60 }));
 
 app.use(requestLogger);
 app.use(crashTestRouter);
