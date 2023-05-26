@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const crashTestRouter = require('./routes/crash');
 const userRouter = require('./routes/users');
@@ -16,7 +17,6 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const NotFoundError = require('./errors/NotFoundError');
 const errorHandler = require('./middlewares/error-handler');
-const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 
@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 
-app.use(cors);
+app.use(cors({ origin: ['http://localhost:3001', 'http://localhost:3001', 'https://supercyanide.nomoredomains.rocks', 'http://supercyanide.nomoredomains.rocks'], credentials: true, maxAge: 60 }));
 
 app.use(requestLogger);
 app.use(crashTestRouter);
