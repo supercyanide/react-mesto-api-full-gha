@@ -1,0 +1,11 @@
+.auth-form__login {
+    font-size: 14px;
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+.auth-form__login:hover {
+    opacity: .8;
+}
