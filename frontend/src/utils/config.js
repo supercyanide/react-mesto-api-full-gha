@@ -6,5 +6,5 @@
 //     errorClass: 'popup__error'
 // };
 export const apiConfig = {
-    baseUrl: 'https://api.supercyanide.nomoredomains.rocks', // 'http://localhost:3000',
+    baseUrl: 'https://api.supercyanide.nomoredomains.rocks', //'http://localhost:3000', 
   };
