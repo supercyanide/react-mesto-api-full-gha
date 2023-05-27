@@ -10,6 +10,6 @@
 
 IP-адрес: 158.160.42.239
 
-[Frontend](https://supercyanide.nomoredomains.rocks/)
+Frontend :https://supercyanide.nomoredomains.rocks/
 
-[Backend](https://api.supercyanide.nomoredomains.rocks/)
+Backend: https://api.supercyanide.nomoredomains.rocks/
