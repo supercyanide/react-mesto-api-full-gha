@@ -53,12 +53,11 @@ app.use(userRouter);
 app.use(cardRouter);
 app.use(errorLogger);
 
+app.use('*', (req, res, next) => {
+  next(new NotFoundError('URL не найден'));
+});
 app.use(errors());
 
 app.use(errorHandler);
-
-app.use('*', () => {
-  throw new NotFoundError('URL не найден1');
-});
 
 app.listen(PORT, () => console.log(`🚀 Listening on ${PORT} port`));
