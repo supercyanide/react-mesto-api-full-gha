@@ -146,12 +146,14 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+    const isLiked = card.likes.some((userId) => userId === currentUser._id);
+
     if (isLiked) {
       api.deleteLike(card._id)
         .then((newCard) =>
-          setCards((state) =>
-            state.map((item) => (item._id === card._id ? newCard : item))
+          setCards((prevState) => {
+            return prevState.map((item) => (item._id === card._id ? newCard : item))
+          }
           )
         )
         .catch((err) => {
@@ -161,8 +163,9 @@ function App() {
       api
         .addLike(card._id)
         .then((newCard) =>
-          setCards((state) =>
-            state.map((item) => (item._id === card._id ? newCard : item))
+          setCards((prevState) => {
+            return prevState.map((item) => (item._id === card._id ? newCard : item))
+          }
           )
         )
         .catch((err) => {
@@ -186,8 +189,9 @@ function App() {
   function handleUpdateUser ({ name, about }) {
     setIsLoading(true);
     api.editUserInfo({name, about})
-      .then(({ name, about, avatar, _id }) => {
-        setCurrentUser({ name, about, avatar, _id })
+      .then((result) => {
+        // console.log(result);
+        setCurrentUser(result.data)
         closeAllPopups();
       })
       .catch((err) => {
@@ -200,8 +204,8 @@ function App() {
   function handleUpdateAvatar(avatar) {
     setIsLoading(true);
     api.editAvatar(avatar)
-      .then((avatar) => {
-        setCurrentUser(avatar);
+      .then((result) => {
+        setCurrentUser(result.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -214,7 +218,7 @@ function App() {
     setIsLoading(true);
     api.addNewCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards])
+        setCards([...cards, newCard])
         closeAllPopups()
       })
       .catch((err) => {
@@ -223,6 +227,8 @@ function App() {
       .finally(() => setIsLoading(false))
 
   }
+
+  console.log(currentUser)
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -253,7 +259,7 @@ function App() {
               isLoggedIn={isLoggedIn}
             />
             <ProtectedRouteElement element={Main} loggedIn={isLoggedIn}
-              cards={cards && cards.data || []}
+              cards={cards}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
               onEditAvatar={handleEditAvatarClick}

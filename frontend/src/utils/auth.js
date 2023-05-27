@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.supercyanide.nomoredomains.rocks'; //'https://c4c3-212-58-103-119.eu.ngrok.io';
+const BASE_URL = 'http://localhost:3000'; //'https://api.supercyanide.nomoredomains.rocks'; //'https://c4c3-212-58-103-119.eu.ngrok.io';
 
 function checkResponse(res) {
   if (res.ok) {
@@ -42,8 +42,8 @@ export const signin = (email, password) => {
     if (data.token) {
       localStorage.setItem('token', data.token);
     }
-
     return data
+    
   });
 };
 
