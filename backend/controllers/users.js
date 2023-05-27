@@ -133,13 +133,7 @@ const login = (req, res, next) => {
 
       res.send({ email, token });
     })
-    .catch((err) => {
-      res
-        .status(401)
-        .send({ message: err.message });
-
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports = {
