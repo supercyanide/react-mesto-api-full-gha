@@ -19,9 +19,6 @@ import * as auth from '../utils/auth.js'
 import api from '../utils/Api.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
-
-
-
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -44,29 +41,29 @@ function App() {
 
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isImagePopupOpen
 
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
     isLoggedIn &&
       Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([userData, cards]) => {
           setCurrentUser(userData);
           setCards(cards);
+          // console.log(currentUser)
         })
         .catch(err => {
           console.log(err);
         })
   }, [isLoggedIn]);
-  
-  useEffect(() => {
-    handleTokenCheck();
-  }, [])
 
-  const handleTokenCheck = () => {
-    const token = localStorage.getItem('token');
+  useEffect(() => {
     if (token) {
-      auth.checkToken(token).then((res) => {
+      auth.checkToken(token)
+      .then((res) => {
         if (res) {
           setLoggedIn(true);
           setUserEmail(res.email);
+          setCurrentUser(res);
           navigate("/", { replace: true });
         }
       })
@@ -74,7 +71,27 @@ function App() {
         console.log(err);
       });
     }
-  }
+    console.log(currentUser)
+  }, [token])
+
+
+  // const handleTokenCheck = () => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     auth.checkToken(token).then((res) => {
+  //       if (res) {
+  //         setLoggedIn(true);
+  //         setUserEmail(res.email);
+  //         setCurrentUser(res);
+  //         // console.log(currentUser)
+  //         navigate("/", { replace: true });
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  //   }
+  // }
 
   function handleRegister(formValue) {
     auth.signup(formValue)
@@ -120,7 +137,8 @@ function App() {
 
   function signOut() {
     localStorage.removeItem('token');
-
+    setCurrentUser({});
+    // console.log(currentUser);
     navigate('/sign-in');
   }
 
@@ -228,7 +246,7 @@ function App() {
 
   }
 
-  console.log(currentUser)
+  // console.log(currentUser)
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
