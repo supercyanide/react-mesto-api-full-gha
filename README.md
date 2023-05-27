@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.42.239
+IP 158.160.42.239
 
 Frontend https://supercyanide.nomoredomains.rocks/
 
