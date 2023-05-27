@@ -57,8 +57,8 @@ app.use(errors());
 
 app.use(errorHandler);
 
-app.use('*', (req, res, next) => {
-  next(new NotFoundError('URL не найден'));
+app.use('*', () => {
+  throw new NotFoundError('URL не найден');
 });
 
 app.listen(PORT, () => console.log(`🚀 Listening on ${PORT} port`));
