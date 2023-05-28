@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
-const rateLimit = require('express-rate-limit');
+// const rateLimit = require('express-rate-limit');
 
 const crashTestRouter = require('./routes/crash');
 const userRouter = require('./routes/users');
@@ -31,12 +31,14 @@ app.use(helmet());
 app.use(cookieParser());
 
 app.use(requestLogger);
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // за 15 минут
-  max: 100, // можно совершить максимум 100 запросов с одного IP
-});
 
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // за 15 минут
+//   max: 100, // можно совершить максимум 100 запросов с одного IP
+// });
+
+// app.use(limiter);
+
 app.use(crashTestRouter);
 app.use(signInRouter);
 app.use(signUpRouter);
