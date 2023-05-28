@@ -49,7 +49,6 @@ function App() {
         .then(([userData, cards]) => {
           setCurrentUser(userData);
           setCards(cards);
-          // console.log(cards)
         })
         .catch(err => {
           console.log(err);
@@ -71,27 +70,7 @@ function App() {
         console.log(err);
       });
     }
-    console.log(currentUser)
   }, [token])
-
-
-  // const handleTokenCheck = () => {
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     auth.checkToken(token).then((res) => {
-  //       if (res) {
-  //         setLoggedIn(true);
-  //         setUserEmail(res.email);
-  //         setCurrentUser(res);
-  //         // console.log(currentUser)
-  //         navigate("/", { replace: true });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  //   }
-  // }
 
   function handleRegister(formValue) {
     auth.signup(formValue)
@@ -117,6 +96,7 @@ function App() {
         navigate('/');
       })
       .catch(err => {
+        setIsInfoTooltip(true);
         console.log(err);
       });
   }
@@ -138,7 +118,6 @@ function App() {
   function signOut() {
     localStorage.removeItem('token');
     setCurrentUser({});
-    // console.log(currentUser);
     navigate('/sign-in');
   }
 
@@ -208,7 +187,6 @@ function App() {
     setIsLoading(true);
     api.editUserInfo({name, about})
       .then((result) => {
-        // console.log(result);
         setCurrentUser(result.data)
         closeAllPopups();
       })
@@ -236,7 +214,7 @@ function App() {
     setIsLoading(true);
     api.addNewCard(data)
       .then((newCard) => {
-        setCards([...cards, newCard])
+        setCards([newCard, ...cards])  
         closeAllPopups()
       })
       .catch((err) => {
@@ -245,8 +223,6 @@ function App() {
       .finally(() => setIsLoading(false))
 
   }
-
-  // console.log(currentUser)
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

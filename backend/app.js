@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 const crashTestRouter = require('./routes/crash');
 const userRouter = require('./routes/users');
@@ -22,42 +22,33 @@ const cors = require('./middlewares/cors');
 const { PORT = 3000 } = process.env;
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
-// const whitelist = [
-//   'http://localhost:3001',
-//   'https://localhost:3001',
-//   'http://supercyanide.nomoredomains.rocks',
-//   'https://supercyanide.nomoredomains.rocks',
-// ];
 const app = express();
 
 app.use(cors);
-
-// app.use(cors({
-//   origin: whitelist,
-//   credentials: true,
-// }));
-
 app.use(express.json());
 
 app.use(helmet());
 app.use(cookieParser());
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // за 15 минут
+  max: 100, // можно совершить максимум 100 запросов с одного IP
+});
+app.use(limiter);
 
 app.use(requestLogger);
 app.use(crashTestRouter);
 app.use(signInRouter);
 app.use(signUpRouter);
-
 app.use(auth);
-
 app.use(userRouter);
 app.use(cardRouter);
-app.use(errorLogger);
 
 app.use('*', (req, res, next) => {
   next(new NotFoundError('URL не найден'));
 });
-app.use(errors());
 
+app.use(errorLogger);
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`🚀 Listening on ${PORT} port`));
