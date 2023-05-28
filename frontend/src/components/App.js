@@ -29,7 +29,8 @@ function App() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isRegisterStatus, setIsRegisterStatus] = useState(true);
+  const [isAuthStatus, setIsAuthStatus] = useState(false);
+  const [popupMessageStatus, setPopupMessageStatus] = useState("");
 
   const [userEmail, setUserEmail] = useState("");
 
@@ -75,12 +76,18 @@ function App() {
   function handleRegister(formValue) {
     auth.signup(formValue)
       .then(() => {
-        setIsRegisterStatus(true);
+        setIsAuthStatus(true);
+        setPopupMessageStatus({
+          text: "Вы успешно зарегистрировались!",
+        });
         navigate('/sign-in', { replace: true });
       }
       )
       .catch((err) => {
-        setIsRegisterStatus(false);
+        setIsAuthStatus(false);
+        setPopupMessageStatus({
+          text: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
         console.log(err);
       })
       .finally(() => {
@@ -96,9 +103,13 @@ function App() {
         navigate('/');
       })
       .catch(err => {
+        setIsAuthStatus(false);
+        setPopupMessageStatus({
+          text: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
         setIsInfoTooltip(true);
         console.log(err);
-      });
+      })
   }
 
   useEffect(() => {
@@ -269,7 +280,8 @@ function App() {
       <InfoTooltip
         isOpen={isInfoTooltip}
         onClose={closeAllPopups}
-        status={isRegisterStatus}
+        status={isAuthStatus}
+        message={popupMessageStatus}
       />
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
