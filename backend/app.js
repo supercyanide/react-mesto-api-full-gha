@@ -29,13 +29,14 @@ app.use(express.json());
 
 app.use(helmet());
 app.use(cookieParser());
+
+app.use(requestLogger);
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // за 15 минут
   max: 100, // можно совершить максимум 100 запросов с одного IP
 });
-app.use(limiter);
 
-app.use(requestLogger);
+app.use(limiter);
 app.use(crashTestRouter);
 app.use(signInRouter);
 app.use(signUpRouter);
